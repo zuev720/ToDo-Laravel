@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ToDoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +13,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/todo/form', function () {
+    return view('toDo.form');
+})->name('showForm');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/todo/{id}', [ToDoController::class, 'show'])->name('showTask');
+Route::get('/todo', [ToDoController::class, 'index'])->name('showTasks');
+
+Route::post('/todo/create', [ToDoController::class, 'create'])->name('createTask');
+
+Route::redirect('/', '/todo');
