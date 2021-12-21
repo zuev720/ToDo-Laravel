@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ToDoController extends Controller
 {
@@ -18,7 +19,7 @@ class ToDoController extends Controller
      */
     public function index()
     {
-        $tasks = ToDo::all()->toArray();
+        $tasks = ToDo::all()->where('user_id', '=', Auth::user()->id)->toArray();
         return view('toDo.toDoList',['tasks' => $tasks]);
     }
 
@@ -26,17 +27,18 @@ class ToDoController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Request $request
+     * @param ToDo $todo
      * @return RedirectResponse
      */
     public function create(Request $request, ToDo $todo): RedirectResponse
     {
         $title = $request->input('title');
         $description = $request->input('description');
-//        dd($title, $description);
         $todo::create([
             'title' => $title,
             'description' => $description,
-            'created_at' => now()
+            'user_id' => Auth::user()->id,
+            'created_at' => now(),
         ]);
         return redirect()->route('showTasks');
     }

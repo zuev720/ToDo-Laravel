@@ -1,4 +1,4 @@
-@extends('toDo.main')
+@extends('layouts.app')
 @section('content')
     <form method="POST" class="mt-5" action="{{route('createTask')}}">
         @csrf

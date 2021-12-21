@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ToDoController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,13 +14,18 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/todo/form', function () {
-    return view('toDo.form');
-})->name('showForm');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/todo/form', function () {
+        return view('toDo.form');
+    })->name('showForm');
+    Route::get('/todo/{id}', [ToDoController::class, 'show'])->name('showTask');
+    Route::get('/todo', [ToDoController::class, 'index'])->name('showTasks');
+    Route::post('/todo/create', [ToDoController::class, 'create'])->name('createTask');
+});
 
-Route::get('/todo/{id}', [ToDoController::class, 'show'])->name('showTask');
-Route::get('/todo', [ToDoController::class, 'index'])->name('showTasks');
+Route::redirect('/', '/home');
 
-Route::post('/todo/create', [ToDoController::class, 'create'])->name('createTask');
 
-Route::redirect('/', '/todo');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

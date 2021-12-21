@@ -17,6 +17,7 @@ class CreateToDoTable extends Migration
             $table->id();
             $table->string('title', 50);
             $table->text('description');
+            $table->bigInteger('user_id');
             $table->timestamps();
         });
     }

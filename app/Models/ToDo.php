@@ -15,6 +15,7 @@ class ToDo extends Model
     protected $fillable = [
         'title',
         'description',
+        'user_id',
         'created_at',
     ];
 

@@ -1,4 +1,4 @@
-@extends('toDo.main')
+@extends('layouts.app')
 @section('content')
     <div class="card w-75">
         <div class="card-body">
